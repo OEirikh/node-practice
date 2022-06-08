@@ -1,8 +1,9 @@
-const { getCurrentDate } = require("./dateUtils");
+// const { getCurrentDate } = require("./dateUtils");
 // const { server } = require("./server");
-const { serverExpress } = require("./serverExpress");
-const Calc = require("calc-js").Calc;
-const fs = require("fs");
+// const { serverExpress } = require("./serverExpress");
+// const Calc = require("calc-js").Calc;
+const fs = require("fs").promises;
+const path = require("node:path");
 
 // console.log(`getCurrentDate ${getCurrentDate()}`);
 // console.log(global.test);
@@ -11,8 +12,8 @@ const fs = require("fs");
 
 // [, , a, b] = process.argv;
 
-const a = process.argv[2];
-const b = process.argv[3];
+// const a = process.argv[2];
+// const b = process.argv[3];
 
 // console.log(new Calc(parseInt(a)).sum(parseInt(b)).finish()); // parseInt() - округляє до цілого числа
 // console.log(new Calc(parseFloat(a)).minus(parseFloat(b)).finish()); // parseFloat(a) - число 'повністю'
@@ -37,12 +38,33 @@ const b = process.argv[3];
 
 // ------- fs ------
 
-fs.readFile("./data.txt", "utf8", (error, data) => {
-  if (error) {
-    console.error(errror);
+// CallBack //
+// fs.readFile("./public/data.txt", "utf8", (error, data) => {
+//   if (error) {
+//     console.error(error);
+//   }
+//   console.log(data);
+// });
+
+// Async //
+readFile();
+
+async function readFile() {
+  try {
+    const data = await fs.readFile("./public/data.txt", "utf8");
+    console.log(data);
+
+    const newData = `${data} + newData`;
+
+    await fs.writeFile("./public/data.txt", newData, "utf8"); // запис файлу
+    // await fs.rename("./dateUtils.js", "dateUtilsNew.js");          // перейменування файлу
+    // await fs.rename("./dateUtilsNew.js", "./cmd/dateUtilsNew.js"); // переміщення файлу
+    // await fs.unlink("./cmd/file.js");                              // видаленння файлу
+    // await fs.appendFile("./public/data.txt", "Дозапис", "utf8"); // дозаписати в файл
+  } catch (err) {
+    console.error(err);
   }
-  console.log(data);
-});
+}
 
 // console.log("module :", module);
 
