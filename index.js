@@ -1,6 +1,7 @@
 // const { getCurrentDate } = require("./dateUtils");
 // const { server } = require("./server");
-// const { serverExpress } = require("./serverExpress");
+require("dotenv").config();
+const { serverExpress } = require("./serverExpress");
 // const Calc = require("calc-js").Calc;
 const fs = require("fs").promises;
 const path = require("node:path");
@@ -16,7 +17,7 @@ const path = require("node:path");
 // const b = process.argv[3];
 
 // console.log(new Calc(parseInt(a)).sum(parseInt(b)).finish()); // parseInt() - округляє до цілого числа
-// console.log(new Calc(parseFloat(a)).minus(parseFloat(b)).finish()); // parseFloat(a) - число 'повністю'
+// console.log(new Calc(parseFloat(a)).minus(parseFloat(b)).finish()); // parseFloat() - число 'повністю'
 
 // ----- path -----
 
@@ -25,12 +26,12 @@ const path = require("node:path");
 //   "normalization : " + path.normalize("test/test1//2slashes/1slash/tab/..")
 // );
 
-//Join
+// Join
 // console.log(
 //   "Join : " + path.join("test", "test1", "2slashes/1slash", "tab", "..")
 // );
 
-//Resolve
+// Resolve
 // console.log("Resolve : " + path.resolve("dateUtils.js"));
 
 //extName
@@ -51,16 +52,16 @@ readFile();
 
 async function readFile() {
   try {
-    const data = await fs.readFile("./public/data.txt", "utf8");
-    console.log(data);
+    const data = await fs.readFile("./public/data.txt", "utf8"); // читати файл, повертає Buffer
+    // console.log(data);
 
     const newData = `${data} + newData`;
 
-    await fs.writeFile("./public/data.txt", newData, "utf8"); // запис файлу
+    await fs.writeFile("./public/data.txt", newData, "utf8"); // запис файлу, повертає undefined - якщо все гуд, або помилку
     // await fs.rename("./dateUtils.js", "dateUtilsNew.js");          // перейменування файлу
     // await fs.rename("./dateUtilsNew.js", "./cmd/dateUtilsNew.js"); // переміщення файлу
     // await fs.unlink("./cmd/file.js");                              // видаленння файлу
-    // await fs.appendFile("./public/data.txt", "Дозапис", "utf8"); // дозаписати в файл
+    // await fs.appendFile("./public/data.txt", "Дозапис", "utf8");   // дозаписати в файл
   } catch (err) {
     console.error(err);
   }
