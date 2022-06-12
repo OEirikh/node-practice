@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors"); // кросдоменні запроси
 const morgan = require("morgan"); // logger
 const axios = require("axios").default;
 const url = require("url");
@@ -7,7 +8,8 @@ const url = require("url");
 // process.env
 const PORT = process.env.PORT || 8090;
 const baseURL = "https://api.weatherbit.io/v2.0/current?";
-const API_KEY = process.env.API_KEY || "4dfb5f3408fa452a81a30bb5e31050e7";
+const API_KEY = process.env.API_KEY;
+// || "4dfb5f3408fa452a81a30bb5e31050e7";
 
 // Mime types
 // .css - text/css
@@ -21,13 +23,14 @@ const API_KEY = process.env.API_KEY || "4dfb5f3408fa452a81a30bb5e31050e7";
 // Url encoded - aplication/x-www-from-urlencoded - для  передачі данних з форм (нативних)
 
 // middleware------
-// app.use(express.json());
-// //забирати дані з форми
-// app.use(express.urlencoded({ extended: true }));
-// //робить директорію публічною
-// app.use(express.static("public"));
-// // npm i morgan // logger
-// app.use(morgan("tiny"));
+app.use(express.json());
+//забирати дані з форми
+app.use(express.urlencoded({ extended: true }));
+//робить директорію публічною
+app.use(express.static("public"));
+// npm i morgan // logger
+app.use(morgan("tiny"));
+app.use(cors());
 
 // app.use((req, res, next) => {
 //   console.log(`${req.method} ${req.originalUrl} ${new Date().toISOString()}`);
@@ -53,7 +56,7 @@ app.get("/api/weather", async (req, res) => {
   try {
     // req.query.params - параметри запросу від клієнта
     // req.body  - те що присилає клієнт (JSON, XML)
-    // req.headers -
+    // req.headers - заголовки запиту
 
     const { latitude, longitude } = req.query;
 
@@ -86,9 +89,9 @@ app.get("/api/weather", async (req, res) => {
 
     console.log(city_name, description, temp, timezone);
 
-    res.json({ city_name, description, temp, timezone });
-  } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(200).json({ city_name, description, temp, timezone });
+  } catch (err) {
+    res.status(500).json({ message: err });
   }
 });
 
